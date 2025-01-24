@@ -66,7 +66,7 @@ class Router
 
   protected function callAction(string $controller, string $action, array $params): string
   {
-    $controllerClass = 'App\\Controller\\$controller';
+    $controllerClass = "App\\Controller\\$controller";
     return (new $controllerClass)->$action(...$params);
   }
 }
