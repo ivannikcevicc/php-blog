@@ -19,7 +19,7 @@ class View
   {
     extract($data);
 
-    $path = dirname(__DIR__) . "/../app/Views/$template.php";
+    $path = dirname(__DIR__) . "/app/Views/$template.php";
 
     if (!file_exists($path)) {
       throw new ErrorException("Error: Template file not found: $path");
@@ -30,7 +30,7 @@ class View
     return ob_get_clean();
   }
 
-  protected static function renderLayout(string $template, array $data, string $content): string
+  protected static function renderLayout(?string $template, array $data, string $content): string
   {
     if (null === $template) {
       return $content;
@@ -38,7 +38,7 @@ class View
 
     extract([...$data, 'content' => $content]);
 
-    $path = dirname(__DIR__) . "/../app/Views/$template.php";
+    $path = dirname(__DIR__) . "/app/Views/$template.php";
 
     if (!file_exists($path)) {
       throw new ErrorException("Error: Layout file not found: $path");
