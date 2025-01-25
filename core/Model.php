@@ -21,7 +21,16 @@ abstract class Model
     $result = $db->query("SELECT * FROM " . static::$table . ' WHERE id = ?', [$id])->fetch(PDO::FETCH_ASSOC);
     return $result ? static::createFromArray($result) : null;
   }
-  public static function create(array $data): static {}
+  public static function create(array $data): static
+  {
+    $db = App::get('database');
+    //Get the names of the columns in the table
+    $columns = implode(',', array_keys($data));
+    // id, title, created_at, content
+    $sql = "INSERT INTO " . static::$table . " ($columns) VALUES (" . implode(',', array_fill(0, count($data), '?')) . ")";
+    $db->query($sql, array_values($data));
+    return static::find($db->lastInsertId());
+  }
 
   protected static function createFromArray(array $data): static
   {

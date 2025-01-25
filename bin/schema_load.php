@@ -10,6 +10,8 @@ $schemaFile = __DIR__ . '/../database/schema.sql';
 
 $sql = file_get_contents($schemaFile);
 
+throw new Exception('Testing exception handling!');
+
 try {
   $parts = array_filter(explode(';', $sql));
   foreach ($parts as $sqlPart) {
