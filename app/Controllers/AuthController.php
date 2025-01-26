@@ -31,4 +31,10 @@ class AuthController
       data: ['error' => 'Invalid email or password']
     );
   }
+
+  public function destroy()
+  {
+    Auth::logout();
+    Router::redirect('/login');
+  }
 }

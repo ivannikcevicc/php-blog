@@ -30,4 +30,10 @@ class Auth
 
     return static::$user;
   }
+
+  public static function logout(): void
+  {
+    session_destroy();
+    static::$user = null;
+  }
 }
