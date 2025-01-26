@@ -16,7 +16,7 @@ class RememberMe
     return $token;
   }
 
-  public static function validateToken(): ?User
+  public static function user(): ?User
   {
     $tokenString = $_COOKIE[static::COOKIE_NAME] ?? null;
 

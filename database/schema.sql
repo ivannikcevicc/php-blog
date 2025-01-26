@@ -31,5 +31,5 @@ CREATE TABLE IF NOT EXISTS remember_tokens (
   user_id INTEGER NOT NULL,
   expires_at DATETIME NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (user_id) REFERENCES users (id)
 );
