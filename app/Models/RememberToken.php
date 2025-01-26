@@ -10,9 +10,9 @@ class RememberToken extends Model
   protected static string $table = 'remember_tokens';
   public const TOKEN_LIFETIME = 30 * 24 * 60 * 60; // 30 days
 
-  public ?int $id;
-  public int $token;
-  public string $user_id;
+  public $id;
+  public int $user_id;
+  public string $token;
   public string $expires_at;
   public string $created_at;
 

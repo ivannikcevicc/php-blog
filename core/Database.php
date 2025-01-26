@@ -41,10 +41,10 @@ class Database
     $stmt->execute($params);
     return $stmt;
   }
+
   public function fetchAll(string $sql, array $params = [], ?string $className = null): array
   {
     $stmt = $this->query($sql, $params);
-
     if ($className) {
       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       return array_map(function ($row) use ($className) {
@@ -57,14 +57,11 @@ class Database
         return $object;
       }, $results);
     }
-
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-
   public function fetch(string $sql, array $params = [], ?string $className = null): mixed
   {
     $stmt = $this->query($sql, $params);
-
     if ($className) {
       $result = $stmt->fetch(PDO::FETCH_ASSOC);
       if ($result) {
@@ -78,10 +75,8 @@ class Database
       }
       return null;
     }
-
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
-
   public function lastInsertId(): string|false
   {
     return $this->pdo->lastInsertId();

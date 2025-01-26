@@ -5,8 +5,9 @@ namespace App\Models;
 use Core\App;
 use Core\Model;
 
-class Post extends Model {
-  protected static $table = 'posts';
+class Post extends Model
+{
+  protected static string $table = 'posts';
 
   public $id;
   public $user_id;
@@ -15,7 +16,8 @@ class Post extends Model {
   public $views;
   public $created_at;
 
-  public static function getRecent(?int $limit = null, ?int $page = null, ?string $search = null) {
+  public static function getRecent(?int $limit = null, ?int $page = null, ?string $search = null)
+  {
     /** @var \Core\Database $db */
     $db = App::get('database');
 
@@ -43,7 +45,8 @@ class Post extends Model {
     return $db->fetchAll($query, $params, static::class);
   }
 
-  public static function count(?string $search = null): int {
+  public static function count(?string $search = null): int
+  {
     /** @var \Core\Database $db */
     $db = App::get('database');
 
@@ -58,7 +61,8 @@ class Post extends Model {
     return (int) $db->query($query, $params)->fetchColumn();
   }
 
-  public static function incrementViews($id): void {
+  public static function incrementViews($id): void
+  {
     $db = App::get('database');
     $db->query(
       "UPDATE posts SET views = views + 1 WHERE id = ?",

@@ -19,19 +19,20 @@ class RememberMe
   public static function user(): ?User
   {
     $tokenString = $_COOKIE[static::COOKIE_NAME] ?? null;
-
     if (!$tokenString) {
       return null;
     }
+
     $token = RememberToken::findValid($tokenString);
     if (!$token) {
       return null;
     }
-    $user = User::find($token->user_id);
 
+    $user = User::find($token->user_id);
     if ($user) {
       static::rotateToken($token);
     }
+
     return $user;
   }
 
@@ -56,7 +57,15 @@ class RememberMe
   private static function setCookie(string $token): void
   {
     $expiry = time() + RememberToken::TOKEN_LIFETIME;
-    setcookie(static::COOKIE_NAME, $token, $expiry, '/', '', true, true);
+    setcookie(
+      static::COOKIE_NAME,
+      $token,
+      $expiry,
+      '/',
+      '',
+      true,
+      true
+    );
   }
 
   private static function removeCookie(): void
