@@ -20,10 +20,18 @@ class RememberToken extends Model
   {
     $this->token = static::generateToken();
     $this->expires_at = static::getExpiryDate();
-    $this->save();
-    return $this;
+    return $this->save();
   }
 
+  public static function findValid(string $token): ?static
+  {
+    $db = App::get('database');
+    $currentTime = date('Y-m-d H:i:s');
+    $sql = "SELECT * FROM " . static::$table . " WHERE token = ? AND expires_at > ? LIMIT 1";
+    $result = $db->fetch($sql, [$token, $currentTime], static::class);
+
+    return $result ? $result : null;
+  }
   private static function generateToken(): string
   {
     return bin2hex(random_bytes(32));
