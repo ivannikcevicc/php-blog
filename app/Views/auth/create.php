@@ -5,7 +5,7 @@
 <?php endif; ?>
 
 <form action="/login" method="POST">
-  <!-- CSRF -->
+  <?= csrf_token() ?>
   <div>
     <label for="email">Email</label>
     <input type="email" id="email" name="email" required />
