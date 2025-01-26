@@ -16,3 +16,4 @@
 [2025-01-25 22:03:18] Error: Exception in This has happened on the web! on line 0
 [2025-01-25 22:04:01] Error: Exception in This has happened on the web! on line 0
 [2025-01-25 22:06:23] Error: Exception in This has happened on the web! on line 0
+[2025-01-26 00:45:55] Error: PDOException in SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: users.email on line 0

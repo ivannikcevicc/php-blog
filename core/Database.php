@@ -2,18 +2,15 @@
 
 namespace Core;
 
+use Exception;
 use PDO;
 use PDOException;
-use Exception;
 use PDOStatement;
 
-
-class Database
-{
+class Database {
   protected $pdo;
 
-  public function __construct(array $config)
-  {
+  public function __construct(array $config) {
     try {
       $dsn = $this->createDsn($config);
       $username = $config['username'] ?? null;
@@ -22,41 +19,41 @@ class Database
       $this->pdo = new PDO($dsn, $username, $password, $options);
       $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
-      throw new Exception("Error: Database connection failed");
+      throw new Exception("Could not connect to the database");
     }
   }
 
-  protected function createDsn(array $config): string
-  {
+  protected function createDsn(array $config): string {
     $driver = $config['driver'];
     $dbname = $config['dbname'];
-
-    return match ($driver) {
+    return match($driver) {
       'sqlite' => "sqlite:$dbname",
-      default => throw new Exception("Error: Database driver not found: $driver")
+      default => throw new Exception("Unsupported database driver: $driver")
     };
   }
 
-  public function query(string $sql, array $params = []): PDOStatement
-  {
+  public function query(string $sql, array $params = []): PDOStatement {
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute($params);
     return $stmt;
   }
 
-  public function fetchAll(string $sql, array $params = []): array
-  {
+  public function fetchAll(string $sql, array $params = [], ?string $className = null): array {
     $stmt = $this->query($sql, $params);
-    return $stmt->fetchAll(PDO::FETCH_OBJ);
+    return $className 
+      ? $stmt->fetchAll(PDO::FETCH_CLASS, $className)
+      : $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function fetch(string $sql, array $params = []): object|false
-  {
-    return $this->query($sql, $params)->fetch(PDO::FETCH_OBJ);
+  public function fetch(string $sql, array $params = [], ?string $className = null): mixed {
+    $stmt = $this->query($sql, $params);
+    $stmt->setFetchMode(
+      $className ? PDO::FETCH_CLASS : PDO::FETCH_ASSOC, $className
+    );
+    return $stmt->fetch();
   }
 
-  public function lastInsertId(): string|false
-  {
+  public function lastInsertId(): string|false {
     return $this->pdo->lastInsertId();
   }
 }

@@ -40,6 +40,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   font-size: 2em;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 /* Set shorter line heights on headings and interactive elements */
@@ -97,23 +98,19 @@ textarea:not([rows]) {
 :target {
   scroll-margin-block: 5ex;
 }
-
 .flash-messages {
   margin: 10px 0px;
 }
-
 .flash-message {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 4px;
 }
-
 .flash-success {
   background-color: #d4edda;
   border-color: #c3e6cb;
   color: #155724;
 }
-
 .flash-error {
   background-color: #f8d7da;
   border-color: #f5c6cb;

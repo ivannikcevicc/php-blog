@@ -3,10 +3,10 @@
 return [
   'app' => [
     'name' => 'My Blog',
-    'debug' => true,
+    'debug' => true
   ],
   'database' => [
     'driver' => 'sqlite',
-    'dbname' => __DIR__ . '/database/blog.sqlite',
-  ],
+    'dbname' => __DIR__ . '/database/blog.sqlite'
+  ]
 ];
