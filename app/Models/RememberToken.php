@@ -8,7 +8,6 @@ use Core\Model;
 class RememberToken extends Model
 {
   protected static string $table = 'remember_tokens';
-
   private const TOKEN_LIFETIME = 30 * 24 * 60 * 60; // 30 days
 
   public ?int $id;
@@ -16,6 +15,14 @@ class RememberToken extends Model
   public string $user_id;
   public string $expires_at;
   public string $created_at;
+
+  public function rotate(): static
+  {
+    $this->token = static::generateToken();
+    $this->expires_at = static::getExpiryDate();
+    $this->save();
+    return $this;
+  }
 
   private static function generateToken(): string
   {
