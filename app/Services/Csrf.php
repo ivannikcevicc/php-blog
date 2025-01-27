@@ -5,7 +5,7 @@ namespace App\Services;
 class CSRF
 {
   private const TOKEN_LENGTH = 32;
-  private const TOKEN_LIFETIME = 60 * 30; // 30 days
+  private const TOKEN_LIFETIME = 60 * 30; //30 days
   public const TOKEN_FIELD_NAME = 'token';
 
 
