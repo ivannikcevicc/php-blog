@@ -4,14 +4,14 @@ namespace App\Controllers;
 
 use App\Models\Comment;
 use App\Services\Auth;
-use App\Services\CSRF;
+use App\Services\Authorization;
 use Core\Router;
 
 class CommentController
 {
   public function store($id)
   {
-
+    Authorization::verify('comment');
 
     $content = $_POST['content'];
 
