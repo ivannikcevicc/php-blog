@@ -71,7 +71,10 @@ class Router
   {
     $next = $target;
     foreach (array_reverse($middlewares) as $middleware) {
-      $next = (new $middleware)->handle($next);
+      $next = function () use ($middleware, $next) {
+        error_log("Middleware running $middleware");
+        return (new $middleware)->handle($next);
+      };
     }
     return $next();
   }
