@@ -25,12 +25,12 @@ class CSRF
       return true;
     }
 
-    $csrfToken = $token ?? $_POST[static::TOKEN_FIELD_NAME] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+    $csrfToken = $token ?? $_POST[static::TOKEN_FIELD_NAME] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
     if (
       $csrfToken && isset($_SESSION['csrf_token']['token']) &&
       !static::isTokenExpired() &&
-      hash_equals($_SESSION['csrf_token']['token'], $csrfToken)
+      hash_equals($_SESSION['csrf_token']['token'] ?? '', $csrfToken)
     ) {
       static::generateToken();
       return true;

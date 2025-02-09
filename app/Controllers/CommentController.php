@@ -11,9 +11,6 @@ class CommentController
 {
   public function store($id)
   {
-    if (!CSRF::verify()) {
-      Router::pageExpired();
-    }
 
 
     $content = $_POST['content'];
