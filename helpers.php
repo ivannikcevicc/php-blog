@@ -1,8 +1,8 @@
 <?php
 
 use App\Services\Authorization;
-use App\Services\CSRF;
 use Core\View;
+use App\Services\CSRF;
 
 if (!function_exists('partial')) {
   function partial(string $template, array $data = []): string
@@ -17,11 +17,10 @@ if (!function_exists('csrf_token')) {
     $tokenField = CSRF::TOKEN_FIELD_NAME;
     $token = CSRF::getToken();
     return <<<TAG
-    <input type="hidden" name="$tokenField" value="$token"/>
+      <input type="hidden" name="$tokenField" value="$token" />
     TAG;
   }
 }
-
 
 if (!function_exists('check')) {
   function check(string $action, mixed $resource = null): bool

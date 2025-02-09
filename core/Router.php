@@ -6,7 +6,6 @@ class Router
 {
   protected array $routes = [];
   protected array $globalMiddleware = [];
-
   protected array $routeMiddleware = [];
 
   public function add(string $method, string $uri, string $controller, array $middlewares = []): void
@@ -24,7 +23,6 @@ class Router
     $this->globalMiddleware[] = $middleware;
   }
 
-
   public function addRouteMiddleware(string $name, string $middleware): void
   {
     $this->routeMiddleware[$name] = $middleware;
@@ -36,6 +34,7 @@ class Router
     echo View::render('errors/404');
     exit;
   }
+
   public static function unauthorized(): void
   {
     http_response_code(401);
@@ -50,7 +49,6 @@ class Router
     exit;
   }
 
-
   public static function pageExpired(): void
   {
     http_response_code(419);
@@ -58,21 +56,30 @@ class Router
     exit;
   }
 
-
   public function dispatch(string $uri, string $method): string
   {
     $route = $this->findRoute($uri, $method);
-
     if (!$route) {
       return static::notFound();
     }
 
-    $middlewares = [...$this->globalMiddleware, ...array_map(fn($name) => $this->routeMiddleware[$name], $route['middlewares'])];
+    // auth -> App/Middlewares/AuthMiddleware
 
-    return $this->runMiddleware($middlewares, function () use ($route) {
-      [$controller, $action] = explode('@', $route['controller']);
-      return $this->callAction($controller, $action, $route['params']);
-    });
+    $middlewares = [
+      ...$this->globalMiddleware,
+      ...array_map(
+        fn($name) => $this->routeMiddleware[$name],
+        $route['middlewares']
+      )
+    ];
+
+    return $this->runMiddleware(
+      $middlewares,
+      function () use ($route) {
+        [$controller, $action] = explode('@', $route['controller']);
+        return $this->callAction($controller, $action, $route['params']);
+      }
+    );
   }
 
   protected function runMiddleware(array $middlewares, callable $target): mixed
@@ -80,7 +87,7 @@ class Router
     $next = $target;
     foreach (array_reverse($middlewares) as $middleware) {
       $next = function () use ($middleware, $next) {
-        error_log("Middleware running $middleware");
+        error_log("Middleware: running $middleware");
         return (new $middleware)->handle($next);
       };
     }
@@ -95,7 +102,6 @@ class Router
         return [...$route, 'params' => $params];
       }
     }
-
     return null;
   }
 
@@ -126,6 +132,7 @@ class Router
     $controllerClass = "App\\Controllers\\$controller";
     return (new $controllerClass)->$action(...$params);
   }
+
   public static function redirect(string $uri): void
   {
     header("Location: $uri");

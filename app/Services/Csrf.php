@@ -5,18 +5,19 @@ namespace App\Services;
 class CSRF
 {
   private const TOKEN_LENGTH = 32;
-  private const TOKEN_LIFETIME = 60 * 30; //30 days
-  public const TOKEN_FIELD_NAME = 'token';
-
+  private const TOKEN_LIFETIME = 30 * 60;
+  public const TOKEN_FIELD_NAME = '_token';
 
   public static function getToken(): string
   {
-    if (!isset($_SESSION['csrf_token']) || static::isTokenExpired()) {
+    if (
+      !isset($_SESSION['csrf_token'])
+      || static::isTokenExpired()
+    ) {
       return static::generateToken();
     }
     return $_SESSION['csrf_token']['token'];
   }
-
 
   public static function verify(?string $token = null): bool
   {
@@ -27,14 +28,11 @@ class CSRF
 
     $csrfToken = $token ?? $_POST[static::TOKEN_FIELD_NAME] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
 
-    if (
-      $csrfToken && isset($_SESSION['csrf_token']['token']) &&
-      !static::isTokenExpired() &&
-      hash_equals($_SESSION['csrf_token']['token'] ?? '', $csrfToken)
-    ) {
+    if (!empty($csrfToken) && !static::isTokenExpired() && hash_equals($_SESSION['csrf_token']['token'] ?? '', $csrfToken)) {
       static::generateToken();
       return true;
     }
+
     return false;
   }
 

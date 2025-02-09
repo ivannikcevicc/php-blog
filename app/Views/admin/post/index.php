@@ -6,7 +6,7 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Created At</th>
+      <th>Created at</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -18,7 +18,7 @@
         <td>
           <a href="/admin/posts/<?= $post->id ?>/edit">Edit</a>
           <form action="/admin/posts/<?= $post->id ?>/delete" method="POST">
-            <?php csrf_token() ?>
+            <?= csrf_token() ?>
             <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
           </form>
         </td>

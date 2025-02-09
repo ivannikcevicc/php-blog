@@ -12,6 +12,7 @@ class View
   {
     static::$globals[$key] = $value;
   }
+
   public static function render(string $template, array $data = [], string $layout = null): string
   {
     $data = [...static::$globals, ...$data];
@@ -43,7 +44,6 @@ class View
 
   protected static function renderLayout(?string $template, array $data, string $content): string
   {
-
     if (null === $template) {
       return $content;
     }

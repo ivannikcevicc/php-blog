@@ -2,7 +2,6 @@
 
 namespace Core;
 
-
 abstract class Model
 {
   protected static string $table;
@@ -33,7 +32,6 @@ abstract class Model
     return static::find($db->lastInsertId());
   }
 
-
   public function save(): static
   {
     $db = App::get('database');
@@ -43,15 +41,20 @@ abstract class Model
       unset($data['id']);
       return static::create($data);
     }
-    unset($data['id']);
-    $setParts = array_map(fn($column) => "$column = ?", array_keys($data));
 
-    $sql = "UPDATE " . static::$table . " SET " . implode(', ', $setParts) . " WHERE id = ?";
+    unset($data['id']);
+    $setParts = array_map(
+      fn($column) => "$column = ?",
+      array_keys($data)
+    );
+    $sql = "UPDATE "
+      . static::$table
+      . " SET "
+      . implode(', ', $setParts)
+      . " WHERE id = ?";
     $params = array_values($data);
     $params[] = $this->id;
-
     $db->query($sql, $params);
-
     return $this;
   }
 
@@ -60,20 +63,20 @@ abstract class Model
     if (!isset($this->id)) {
       return;
     }
-    $db  = App::get('database');
+
+    $db = App::get('database');
     $sql = "DELETE FROM " . static::$table . " WHERE id = ?";
     $db->query($sql, [$this->id]);
   }
 
-  public static function getRecent(?int $limit = null, ?int $page = null)
-  {
+  public static function getRecent(
+    ?int $limit = null,
+    ?int $page = null
+  ) {
     /** @var \Core\Database $db */
     $db = App::get('database');
-
     $query = "SELECT * FROM " . static::$table;
     $params = [];
-
-
     $query .= " ORDER BY created_at DESC";
 
     if ($limit !== null) {
@@ -94,10 +97,7 @@ abstract class Model
   {
     /** @var \Core\Database $db */
     $db = App::get('database');
-
     $query = "SELECT COUNT(*) FROM " . static::$table;
-
-
     return (int) $db->query($query, [])->fetchColumn();
   }
 }

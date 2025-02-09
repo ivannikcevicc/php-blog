@@ -19,12 +19,11 @@ class AuthController
 
   public function store()
   {
-
-
-
     $email = $_POST['email'];
     $password = $_POST['password'];
     $remember = isset($_POST['remember']) ? (bool)$_POST['remember'] : false;
+
+    // Attempt auth
     if (Auth::attempt($email, $password, $remember)) {
       Router::redirect('/');
     }
@@ -32,7 +31,9 @@ class AuthController
     return View::render(
       template: 'auth/create',
       layout: 'layouts/main',
-      data: ['error' => 'Invalid email or password']
+      data: [
+        'error' => 'Invalid credentials'
+      ]
     );
   }
 

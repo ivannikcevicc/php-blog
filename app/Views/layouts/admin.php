@@ -17,7 +17,7 @@
     <a href="/admin/posts">Manage Posts</a>
 
     <form action="/logout" method="POST">
-      <?php csrf_token() ?>
+      <?= csrf_token() ?>
       <button>Logout (<?= $user->email ?>)</button>
     </form>
 
