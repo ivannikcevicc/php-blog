@@ -15,7 +15,7 @@ class PostController
   public function index()
   {
     return View::render(
-      template: 'admin/posts/index',
+      template: 'admin/post/index',
       layout: 'layouts/admin',
       data: [
         'posts' => Post::all(),
@@ -27,7 +27,7 @@ class PostController
   public function create()
   {
     return View::render(
-      template: 'admin/posts/create',
+      template: 'admin/post/create',
       layout: 'layouts/admin'
     );
   }
@@ -43,7 +43,7 @@ class PostController
   public function edit($id)
   {
     return View::render(
-      template: 'admin/posts/edit',
+      template: 'admin/post/edit',
       layout: 'layouts/admin',
       data: [
         'posts' => Post::find($id),
